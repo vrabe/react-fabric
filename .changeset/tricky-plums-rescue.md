@@ -1,0 +1,5 @@
+---
+'react-fabric': patch
+---
+
+aa

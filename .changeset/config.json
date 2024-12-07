@@ -6,5 +6,5 @@
   "linked": [],
   "access": "public",
   "updateInternalDependencies": "patch",
-  "ignore": ["@yxf/astro", "@yxf/eslint-config", "@yxf/rollup-config"]
+  "ignore": ["@yxf/astro"]
 }
