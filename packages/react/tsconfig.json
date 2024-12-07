@@ -1,0 +1,10 @@
+{
+  "extends": "@yxf/tsconfig/react.json",
+  "display": "react-fabric",
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "dist"],
+  "compilerOptions": {
+    "outDir": "dist"
+  }
+}
+
