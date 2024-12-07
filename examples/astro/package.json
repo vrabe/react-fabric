@@ -1,5 +1,5 @@
 {
-  "name": "@yxf/astro",
+  "name": "astro",
   "type": "module",
   "version": "0.0.0",
   "private": true,
