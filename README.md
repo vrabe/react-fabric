@@ -25,11 +25,11 @@ React Fabric is a powerful React wrapper for Fabric.js, providing a declarative 
 ### Installation
 
 ```bash
-npm install react-fabric
+npm install react-fabric2
 # or
-yarn add react-fabric
+yarn add react-fabric2
 # or
-pnpm add react-fabric
+pnpm add react-fabric2
 ```
 
 ### Usage
@@ -37,7 +37,7 @@ pnpm add react-fabric
 #### Basic Usage
 
 ```tsx
-import { ReactFabric, Rect } from 'react-fabric'
+import { ReactFabric, Rect } from 'react-fabric2'
 
 function App() {
   return (
@@ -64,7 +64,7 @@ function App() {
 #### Using Provider Pattern
 
 ```tsx
-import { ReactFabric, ReactFabricProvider, useReactFabric } from 'react-fabric'
+import { ReactFabric, ReactFabricProvider, useReactFabric } from 'react-fabric2'
 
 // Toolbar component with canvas controls
 function Toolbar() {
@@ -179,11 +179,11 @@ React Fabric 是一个强大的 Fabric.js React 封装库，提供了声明式�
 ### 安装
 
 ```bash
-npm install react-fabric
+npm install react-fabric2
 # 或
-yarn add react-fabric
+yarn add react-fabric2
 # 或
-pnpm add react-fabric
+pnpm add react-fabric2
 ```
 
 ### 使用方法
@@ -191,7 +191,7 @@ pnpm add react-fabric
 #### 基础用法
 
 ```tsx
-import { ReactFabric, Rect } from 'react-fabric'
+import { ReactFabric, Rect } from 'react-fabric2'
 
 function App() {
   return (
@@ -218,7 +218,7 @@ function App() {
 #### 使用 Provider 模式
 
 ```tsx
-import { ReactFabric, ReactFabricProvider, useReactFabric } from 'react-fabric'
+import { ReactFabric, ReactFabricProvider, useReactFabric } from 'react-fabric2'
 
 // 工具栏组件，用于控制画布
 function Toolbar() {
