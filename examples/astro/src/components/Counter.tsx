@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { ReactFabric, BackgroundImage, Rect } from "react-fabric"
+import { ReactFabric, BackgroundImage, Rect } from "react-fabric2"
 
 const rects=[
   {
@@ -7,7 +7,7 @@ const rects=[
       "id": "9503CC005F714CA4JX70K7yY",
       "question_num": 1,
       "raw": "0,842,1653,842,1653,1757,0,1757",
-      "strokeWidth": 1,
+      
       "defaultLeft": 0,
       "defaultTop": 728.6053869174862,
       "defaultWidth": 1429.3856348867039,
@@ -35,7 +35,7 @@ const rects=[
       "config": {
           "visible": false
       },
-      "strokeWidth": 1,
+      
       "defaultLeft": 0,
       "defaultTop": 728.6053869174862,
       "defaultWidth": 1429.3856348867039,
@@ -63,7 +63,7 @@ const rects=[
       "config": {
           "visible": false
       },
-      "strokeWidth": 1,
+      
       "defaultLeft": 0,
       "defaultTop": 728.6053869174862,
       "defaultWidth": 1429.3856348867039,
@@ -89,7 +89,7 @@ const rects=[
       "id": "71D0740EECB34240y57807BR",
       "question_num": 2,
       "raw": "0,1757,1653,1757,1653,2232,0,2232",
-      "strokeWidth": 1,
+      
       "defaultLeft": 0,
       "defaultTop": 1520.3796494228304,
       "defaultWidth": 1429.3856348867039,
@@ -117,7 +117,7 @@ const rects=[
       "config": {
           "visible": false
       },
-      "strokeWidth": 1,
+      
       "defaultLeft": 0,
       "defaultTop": 1520.3796494228304,
       "defaultWidth": 1429.3856348867039,
@@ -143,7 +143,7 @@ const rects=[
       "id": "71D0740EECB34240y57807BR",
       "question_num": 3,
       "raw": "1653,157,3306,157,3306,1181,1653,1181",
-      "strokeWidth": 1,
+      
       "defaultLeft": 1430.3856348867039,
       "defaultTop": 135.8563488670372,
       "defaultWidth": 1429.3856348867039,
@@ -171,7 +171,7 @@ const rects=[
       "config": {
           "visible": false
       },
-      "strokeWidth": 1,
+      
       "defaultLeft": 1430.3856348867039,
       "defaultTop": 135.8563488670372,
       "defaultWidth": 1429.3856348867039,
@@ -199,7 +199,7 @@ const rects=[
       "config": {
           "visible": false
       },
-      "strokeWidth": 1,
+      
       "defaultLeft": 1430.3856348867039,
       "defaultTop": 135.8563488670372,
       "defaultWidth": 1429.3856348867039,
@@ -227,7 +227,7 @@ const rects=[
       "config": {
           "visible": false
       },
-      "strokeWidth": 1,
+      
       "defaultLeft": 1430.3856348867039,
       "defaultTop": 135.8563488670372,
       "defaultWidth": 1429.3856348867039,
@@ -255,7 +255,7 @@ const rects=[
       "config": {
           "visible": false
       },
-      "strokeWidth": 1,
+      
       "defaultLeft": 1430.3856348867039,
       "defaultTop": 135.8563488670372,
       "defaultWidth": 1429.3856348867039,
@@ -281,7 +281,7 @@ const rects=[
       "id": "CEE5B03A0EE84D7672AWX760",
       "question_num": 4,
       "raw": "1653,1181,3306,1181,3306,2232,1653,2232",
-      "strokeWidth": 1,
+      
       "defaultLeft": 1430.3856348867039,
       "defaultTop": 1021.9512612227448,
       "defaultWidth": 1429.3856348867039,
@@ -309,7 +309,7 @@ const rects=[
       "config": {
           "visible": false
       },
-      "strokeWidth": 1,
+      
       "defaultLeft": 1430.3856348867039,
       "defaultTop": 1493.5545104745618,
       "defaultWidth": 1429.3856348867039,
@@ -334,7 +334,7 @@ const rects=[
           1574.8952543822147
       ],
       "id": "CEE5B03A0EE84D7672AWX760-4--sqs-0-0",
-      "strokeWidth": 1,
+      
       "defaultLeft": 1603.451047456178,
       "defaultTop": 1529.8982471141514,
       "defaultWidth": 71.68747327917913,
@@ -359,7 +359,7 @@ const rects=[
           1628.5455322787516
       ],
       "id": "CEE5B03A0EE84D7672AWX760-4--sqs-0-1",
-      "strokeWidth": 1,
+      
       "defaultLeft": 1603.451047456178,
       "defaultTop": 1583.5485250106883,
       "defaultWidth": 71.68747327917913,
@@ -384,7 +384,7 @@ const rects=[
           1681.3304831124412
       ],
       "id": "CEE5B03A0EE84D7672AWX760-4--sqs-0-2",
-      "strokeWidth": 1,
+      
       "defaultLeft": 1603.451047456178,
       "defaultTop": 1636.333475844378,
       "defaultWidth": 71.68747327917913,
@@ -409,7 +409,7 @@ const rects=[
           1734.115433946131
       ],
       "id": "CEE5B03A0EE84D7672AWX760-4--sqs-0-3",
-      "strokeWidth": 1,
+      
       "defaultLeft": 1603.451047456178,
       "defaultTop": 1689.1184266780676,
       "defaultWidth": 71.68747327917913,
@@ -437,7 +437,7 @@ const rects=[
       "config": {
           "visible": false
       },
-      "strokeWidth": 1,
+      
       "defaultLeft": 1430.3856348867039,
       "defaultTop": 1744.4993587002994,
       "defaultWidth": 1429.3856348867039,
@@ -462,7 +462,7 @@ const rects=[
           1826.7054296707995
       ],
       "id": "CEE5B03A0EE84D7672AWX760-4--sqs-1-0",
-      "strokeWidth": 1,
+      
       "defaultLeft": 1603.451047456178,
       "defaultTop": 1781.7084224027362,
       "defaultWidth": 71.68747327917913,
@@ -487,7 +487,7 @@ const rects=[
           1826.7054296707995
       ],
       "id": "CEE5B03A0EE84D7672AWX760-4--sqs-1-1",
-      "strokeWidth": 1,
+      
       "defaultLeft": 2175.43223599829,
       "defaultTop": 1781.7084224027362,
       "defaultWidth": 71.68747327917936,
@@ -512,7 +512,7 @@ const rects=[
           1879.4903805044892
       ],
       "id": "CEE5B03A0EE84D7672AWX760-4--sqs-1-2",
-      "strokeWidth": 1,
+      
       "defaultLeft": 1603.451047456178,
       "defaultTop": 1834.493373236426,
       "defaultWidth": 71.68747327917913,
@@ -537,7 +537,7 @@ const rects=[
           1879.4903805044892
       ],
       "id": "CEE5B03A0EE84D7672AWX760-4--sqs-1-3",
-      "strokeWidth": 1,
+      
       "defaultLeft": 2175.43223599829,
       "defaultTop": 1834.493373236426,
       "defaultWidth": 71.68747327917936,
@@ -565,7 +565,7 @@ const rects=[
       "config": {
           "visible": false
       },
-      "strokeWidth": 1,
+      
       "defaultLeft": 1430.3856348867039,
       "defaultTop": 1889.8743052586576,
       "defaultWidth": 1429.3856348867039,
@@ -584,7 +584,7 @@ export default function Counter() {
       <ReactFabric defaultCentered  style={{ border: '1px solid red' }}>
         {
           rects.map((rect,index)=>(
-            <Rect key={index} {...rect} left={rect.defaultLeft} top={rect.defaultTop}  width={rect.defaultWidth} height={rect.defaultHeight}/>
+            <Rect key={index} {...rect} left={rect.defaultLeft} strokeWidth={1} top={rect.defaultTop}  width={rect.defaultWidth} height={rect.defaultHeight}/>
           ))
         }
       

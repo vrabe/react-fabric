@@ -1,5 +1,5 @@
 {
-  "name": "react-fabric",
+  "name": "react-fabric2",
   "type": "module", 
   "version": "0.0.0",
   "description": "React Fabric",
@@ -76,13 +76,6 @@
     "rimraf": "^6.0.1",
     "rollup": "^4.28.1",
     "zustand": "4"
-  },
-  "rollup": {
-    "globals": {
-      "zustand": "zustand",
-      "zustand/shallow": "zustandShallow"
-    },
-    "name": "ReactFabric"
   },
   "dependencies": {
     "@types/lodash-es": "^4.17.12",

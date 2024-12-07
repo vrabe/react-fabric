@@ -1,6 +1,6 @@
 {
   "extends": "@yxf/tsconfig/react.json",
-  "display": "react-fabric",
+  "display": "react-fabric2",
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules", "dist"],
   "compilerOptions": {

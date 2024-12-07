@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@astrojs/react": "^4.0.0",
-    "react-fabric": "workspace:*",
+    "react-fabric2": "workspace:*",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "astro": "^5.0.3",
