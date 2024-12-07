@@ -1,5 +1,5 @@
 ---
-'react-fabric': patch
+'react-fabric2': patch
 ---
 
 aa
