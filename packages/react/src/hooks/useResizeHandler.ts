@@ -1,12 +1,12 @@
-import { throttle } from "lodash-es"
-import { useCallback, useEffect } from "react"
-import { useStore } from "./useStore"
+import { throttle } from 'lodash'
+import { useCallback, useEffect } from 'react'
+import { useStore } from './useStore'
 
 const useResizeHandler = () => {
-  const { domNode, canvas, setDimensions } = useStore((state) => ({
+  const { domNode, canvas, setDimensions } = useStore(state => ({
     domNode: state.domNode,
     canvas: state.canvas,
-    setDimensions: state.setDimensions
+    setDimensions: state.setDimensions,
   }))
 
   const updateDimensions = useCallback(() => {
@@ -28,15 +28,15 @@ const useResizeHandler = () => {
     updateDimensions()
     const throttledUpdate = throttle(updateDimensions, 200, {
       leading: true,
-      trailing: true
+      trailing: true,
     })
 
-    window.addEventListener("resize", throttledUpdate)
+    window.addEventListener('resize', throttledUpdate)
     const resizeObserver = new ResizeObserver(throttledUpdate)
     resizeObserver.observe(domNode)
 
     return () => {
-      window.removeEventListener("resize", throttledUpdate)
+      window.removeEventListener('resize', throttledUpdate)
       resizeObserver.disconnect()
       throttledUpdate.cancel()
     }

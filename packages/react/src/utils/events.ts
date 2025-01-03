@@ -1,10 +1,10 @@
-import type { CanvasEvents, GroupEvents, ObjectEvents } from "fabric"
-import type { AllCanvasEvents } from "../types/canvas"
-import type { AllObjectEvents } from "../types/object"
+import type { CanvasEvents, GroupEvents, ObjectEvents } from 'fabric6'
+import type { AllCanvasEvents } from '../types/canvas'
+import type { AllObjectEvents } from '../types/object'
 
 export const bindEvents = <T extends CanvasEvents | ObjectEvents | GroupEvents>(
   target: any,
-  listeners: Partial<T extends CanvasEvents ? AllCanvasEvents : AllObjectEvents>
+  listeners: Partial<T extends CanvasEvents ? AllCanvasEvents : AllObjectEvents>,
 ) => {
   const cleanup: (() => void)[] = []
 
@@ -13,7 +13,7 @@ export const bindEvents = <T extends CanvasEvents | ObjectEvents | GroupEvents>(
       const rawEventName = key
         .slice(2)
         .replace(/[A-Z]/g, (match, offset) =>
-          offset === 0 ? match.toLowerCase() : ":" + match.toLowerCase()
+          offset === 0 ? match.toLowerCase() : ':' + match.toLowerCase(),
         ) as keyof T
 
       target.on(rawEventName, handler)
@@ -21,5 +21,5 @@ export const bindEvents = <T extends CanvasEvents | ObjectEvents | GroupEvents>(
     }
   })
 
-  return () => cleanup.forEach((fn) => fn())
+  return () => cleanup.forEach(fn => fn())
 }

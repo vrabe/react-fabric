@@ -1,13 +1,35 @@
-import type { TPointerEvent, TPointerEventInfo } from "fabric"
-import { useEffect, useRef } from "react"
-import { shallow } from "zustand/shallow"
-import type { ReactFabricState } from "../types/store"
-import { useStore, useStoreApi } from "./useStore"
+import type { Canvas, FabricObject, TPointerEvent, TPointerEventInfo } from 'fabric6'
+import { shallow } from 'zustand/shallow'
+import { useEffect, useRef } from 'react'
+import type { ReactFabricState } from '../types/store'
+import { useStore, useStoreApi } from './useStore'
 
 const selector = (s: ReactFabricState) => ({
   canvas: s.canvas,
-  draggable: s.draggable
+  draggable: s.draggable,
 })
+
+const stageObject = (object: FabricObject) => {
+  const raw = object.get('selectable')
+  object.set('selectable', false)
+
+  return () => {
+    object.set('selectable', raw)
+  }
+}
+
+const stage = (canvas: Canvas | null) => {
+  if (!canvas) return () => {}
+  const objects = canvas.getObjects()
+
+  const unStagedList = objects.map(object => {
+    return stageObject(object)
+  })
+
+  return () => {
+    unStagedList.forEach(fn => fn())
+  }
+}
 
 const useDraggable = () => {
   const store = useStoreApi()
@@ -18,6 +40,7 @@ const useDraggable = () => {
 
   useEffect(() => {
     if (!draggable) return
+    const unStaged = stage(canvas)
 
     const onMouseDown = ({ e }: TPointerEventInfo<MouseEvent>) => {
       isDraggingRef.current = true
@@ -43,14 +66,15 @@ const useDraggable = () => {
       }
     }
 
-    canvas?.on("mouse:down", onMouseDown)
-    canvas?.on("mouse:move", onMouseMove)
-    canvas?.on("mouse:up", onMouseUp)
+    canvas?.on('mouse:down', onMouseDown)
+    canvas?.on('mouse:move', onMouseMove)
+    canvas?.on('mouse:up', onMouseUp)
 
     return () => {
-      canvas?.off("mouse:down", onMouseDown)
-      canvas?.off("mouse:move", onMouseMove)
-      canvas?.off("mouse:up", onMouseUp)
+      unStaged()
+      canvas?.off('mouse:down', onMouseDown)
+      canvas?.off('mouse:move', onMouseMove)
+      canvas?.off('mouse:up', onMouseUp)
     }
   }, [canvas, draggable, store])
 

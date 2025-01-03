@@ -1,13 +1,13 @@
-import type { CanvasEvents } from "fabric"
+import type { CanvasEvents } from 'fabric6'
 import type {
   FabricObject,
   FabricObjectProps,
   ObjectEvents,
   SerializedObjectProps,
   TEvent,
-  TPointerEvent
-} from "fabric"
-import type { MyCapitalize } from "./utils"
+  TPointerEvent,
+} from 'fabric6'
+import type { MyCapitalize } from './utils'
 
 export type FabricParams = {
   domNode: HTMLCanvasElement
@@ -32,11 +32,7 @@ export interface AllObjectEvents
   extends Record<keyof InvertedRawEventNames, TEventCallback>,
     TEventCallback<
       Partial<TEvent<TPointerEvent>> & {
-        target: FabricObject<
-          Partial<FabricObjectProps>,
-          SerializedObjectProps,
-          ObjectEvents
-        >
+        target: FabricObject<Partial<FabricObjectProps>, SerializedObjectProps, ObjectEvents>
       }
     > {}
 

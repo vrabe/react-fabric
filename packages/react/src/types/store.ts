@@ -1,16 +1,6 @@
-import type { Canvas, Point } from "fabric"
-import type {
-  OnNodeDrag,
-  OnNodesChange,
-  OnNodesDelete
-} from "./component-props"
-import type {
-  InternalNodeBase,
-  InternalNodeUpdate,
-  Node,
-  NodeChange,
-  NodeDragItem
-} from "./nodes"
+import type { Canvas } from 'fabric6'
+import type { OnNodeDrag, OnNodesChange, OnNodesDelete } from './component-props'
+import type { InternalNodeBase, Node } from './nodes'
 
 export type OnError = (id: string, message: string) => void
 
@@ -50,10 +40,7 @@ export type ReactFabricStore<NodeType extends Node = Node> = {
   onError?: OnError
 }
 
-export type UpdateNodePositions = (
-  dragItems: Map<string, InternalNodeBase>,
-  dragging?: boolean
-) => void
+export type UpdateNodePositions = (dragItems: Map<string, InternalNodeBase>, dragging?: boolean) => void
 
 type Dimensions = {
   width?: number
@@ -74,5 +61,4 @@ export type ReactFabricActions = {
   setDefaultSelection: (selection: boolean | undefined) => void
   setIsDragging: (bool: boolean) => void
 }
-export type ReactFabricState<NodeType extends Node = Node> =
-  ReactFabricStore<NodeType> & ReactFabricActions
+export type ReactFabricState<NodeType extends Node = Node> = ReactFabricStore<NodeType> & ReactFabricActions

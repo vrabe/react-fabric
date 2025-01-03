@@ -1,5 +1,6 @@
 import type { Node } from '../types/nodes'
 import type { ReactFabricStore } from '../types/store'
+
 const getInitialState = ({
   nodes,
   defaultNodes,
@@ -23,8 +24,8 @@ const getInitialState = ({
     hasDefaultNodes: defaultNodes !== undefined,
     hasDefaultSelection: defaultSelection !== undefined,
     zoom: 1,
-    minManualZoom: 0.1,
-    maxManualZoom: 20,
+    minManualZoom: 0.4,
+    maxManualZoom: 3,
     domNode: null,
     debug: false,
     isDragging: false,

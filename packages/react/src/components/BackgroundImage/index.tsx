@@ -4,37 +4,22 @@ import type {
   ObjectEvents,
   SerializedImageProps,
   TDegree,
-  TPointerEvent
-} from "fabric"
-import { FabricImage, util } from "fabric"
-import {
-  forwardRef,
-  memo,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useRef
-} from "react"
-import { useDidUpdate } from "../../hooks/useDidUpdate"
-import { useStore, useStoreApi } from "../../hooks/useStore"
-import type { ReactFabricState } from "../../types/store"
+  TPointerEvent,
+} from 'fabric6'
+import { FabricImage, util } from 'fabric6'
+import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef } from 'react'
+import { useDidUpdate } from '../../hooks/useDidUpdate'
+import { useStore, useStoreApi } from '../../hooks/useStore'
+import type { ReactFabricState } from '../../types/store'
 
 export type Handle = {}
 
 // 定义一个互斥的 Scale mode 类型
-type ScaleMode =
-  | { scaleToFit: true; scaleToCover?: false }
-  | { scaleToFit?: false; scaleToCover: true }
+type ScaleMode = { scaleToFit: true; scaleToCover?: false } | { scaleToFit?: false; scaleToCover: true }
 
 export type BackgroundImageProps = Partial<ImageProps> & {
   src: string
-  onLoad?: (
-    imageSource: FabricImage<
-      Partial<ImageProps>,
-      SerializedImageProps,
-      ObjectEvents
-    >
-  ) => void
+  onLoad?: (imageSource: FabricImage<Partial<ImageProps>, SerializedImageProps, ObjectEvents>) => void
   onScaling?: (scale: BasicTransformEvent<TPointerEvent>) => void
 
   /** 自动缩放至容器宽高 */
@@ -42,7 +27,7 @@ export type BackgroundImageProps = Partial<ImageProps> & {
 
 const selector = (s: ReactFabricState) => ({
   width: s.width,
-  height: s.height
+  height: s.height,
 })
 
 const BackgroundImage = forwardRef<Handle, BackgroundImageProps>(
@@ -56,7 +41,18 @@ const BackgroundImage = forwardRef<Handle, BackgroundImageProps>(
     const updateViewport = useCallback(
       (params: { scaleToFit?: boolean; scaleToCover?: boolean }) => {
         const { canvas, manualZoom = 1, defaultCentered } = store.getState()
-        if (!backgroundImageRef.current || !canvas) return
+        if (!backgroundImageRef.current) {
+          console.warn('!backgroundImageRef.current')
+          return
+        }
+        if (!canvas) {
+          console.warn('updateViewport: !canvas')
+          return
+        }
+        if (!canvas.backgroundImage) {
+          console.warn('updateViewport: !canvas.backgroundImage')
+          return
+        }
 
         // 1. 计算缩放
         const fitZoom = params.scaleToFit
@@ -75,33 +71,35 @@ const BackgroundImage = forwardRef<Handle, BackgroundImageProps>(
         let deltaY = 0
 
         if (defaultCentered && canvas.backgroundImage) {
-          const canvasCenter = {
-            x: canvas.width! / 2,
-            y: canvas.height! / 2
-          }
-
-          const bgCenter = {
-            x:
-              (canvas.backgroundImage.left! +
-                (canvas.backgroundImage.width! *
-                  canvas.backgroundImage.scaleX!) /
-                  2) *
-              combinedZoom,
-            y:
-              (canvas.backgroundImage.top! +
-                (canvas.backgroundImage.height! *
-                  canvas.backgroundImage.scaleY!) /
-                  2) *
-              combinedZoom
-          }
-
-          deltaX = canvasCenter.x - bgCenter.x
-          deltaY = canvasCenter.y - bgCenter.y
+          const bgWidth = canvas.backgroundImage.width || 0
+          const bgHeight = canvas.backgroundImage.height || 0
+          deltaX = (canvas.width! - bgWidth * combinedZoom) / 2
+          deltaY = (canvas.height! - bgHeight * combinedZoom) / 2
+          // const canvasCenter = {
+          //   x: canvas.width! / 2,
+          //   y: canvas.height! / 2,
+          // }
+          // const bgCenter = {
+          //   x:
+          //     (canvas.backgroundImage.left! + (canvas.backgroundImage.width! * canvas.backgroundImage.scaleX!) / 2) *
+          //     combinedZoom,
+          //   y:
+          //     (canvas.backgroundImage.top! + (canvas.backgroundImage.height! * canvas.backgroundImage.scaleY!) / 2) *
+          //     combinedZoom,
+          // }
+          // deltaX = canvasCenter.x - bgCenter.x
+          // deltaY = canvasCenter.y - bgCenter.y
         }
 
         // 4. 应用最终变换
-        const finalTransform: [number, number, number, number, number, number] =
-          [combinedZoom, 0, 0, combinedZoom, deltaX, deltaY]
+        const finalTransform: [number, number, number, number, number, number] = [
+          combinedZoom,
+          0,
+          0,
+          combinedZoom,
+          deltaX,
+          deltaY,
+        ]
 
         canvas.setViewportTransform(finalTransform)
         canvas.requestRenderAll()
@@ -110,61 +108,74 @@ const BackgroundImage = forwardRef<Handle, BackgroundImageProps>(
         store.setState({
           fitZoom,
           manualZoom,
-          zoom: combinedZoom
+          zoom: combinedZoom,
         })
       },
-      [store]
+      [store],
     )
 
     // 监听 width, height 的变化
     useEffect(() => {
+      console.log('ReactFabric:BackgroundImage,width', width, height)
+
       updateViewport({
         scaleToFit,
-        scaleToCover
+        scaleToCover,
       })
     }, [width, height, scaleToFit, scaleToCover, updateViewport, store])
 
     useEffect(() => {
-      if (!src) return
+      if (!src) {
+        console.warn('ReactFabricBackgroundImage: !src')
+        return
+      }
       const { domNode, setLoading } = store.getState()
       setLoading(true)
-      FabricImage.fromURL(src, { crossOrigin: "anonymous" })
-        .then((imageSource) => {
+      FabricImage.fromURL(src, { crossOrigin: 'anonymous' })
+        .then(imageSource => {
           const { canvas } = store.getState()
-          if (canvas && canvas.width && canvas.height) {
+          if (canvas) {
+            // 初始化时角度的旋转，一定要放到 updateViewport 之后；先画正图片，再进行旋转
+            const removeAngleOptions = { ...options, angle: 0 }
             imageSource.set({
-              ...options,
-              objectCaching: false
+              ...removeAngleOptions,
+              objectCaching: false,
             })
             canvas.getContext().imageSmoothingEnabled = true
-            canvas.getContext().imageSmoothingQuality = "high"
+            canvas.getContext().imageSmoothingQuality = 'high'
             canvas.backgroundImage = imageSource
             backgroundImageRef.current = imageSource
 
-            updateViewport({
-              scaleToFit,
-              scaleToCover
+            requestAnimationFrame(() => {
+              updateViewport({
+                scaleToFit,
+                scaleToCover,
+              })
             })
 
             const viewport = canvas.viewportTransform
-            if (!viewport) return
+            if (!viewport) {
+              console.warn('!viewport')
+              return
+            }
 
+            // imageSource.angle = options.angle || 0
             onLoad?.(imageSource)
-            if (domNode) domNode.dataset.src = src
+          } else {
+            console.warn('ReactFabric:BackgroundImage: !canvas', canvas)
           }
         })
         .finally(() => {
+          if (domNode) domNode.dataset.src = src
           setLoading(false)
         })
 
       return () => {
-        const canvas = store.getState().canvas
-        if (backgroundImageRef.current) {
-          canvas?.remove(backgroundImageRef.current)
+        const { canvas } = store.getState()
+        if (canvas?.backgroundImage) {
+          canvas.backgroundImage = undefined
+          canvas.remove(backgroundImageRef.current!)
           backgroundImageRef.current = null
-        }
-
-        if (canvas?.getElement()) {
           canvas.renderAll()
         }
       }
@@ -176,7 +187,7 @@ const BackgroundImage = forwardRef<Handle, BackgroundImageProps>(
 
       if (backgroundImageRef.current) {
         Object.entries(options).forEach(([key, value]) => {
-          if (key === "angle") {
+          if (key === 'angle') {
             backgroundImageRef.current?.rotate(value as TDegree)
           } else {
             backgroundImageRef.current?.set(key, value)
@@ -188,11 +199,11 @@ const BackgroundImage = forwardRef<Handle, BackgroundImageProps>(
 
     useImperativeHandle(ref, () => ({
       // 是最新的?
-      instance: backgroundImageRef.current
+      instance: backgroundImageRef.current,
     }))
 
     return null
-  }
+  },
 )
 
 export default memo(BackgroundImage)

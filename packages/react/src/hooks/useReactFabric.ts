@@ -23,6 +23,7 @@ const selector = (s: ReactFabricState) => ({
   manualZoom: s.manualZoom,
   maxManualZoom: s.maxManualZoom,
   minManualZoom: s.minManualZoom,
+  loading: s.loading,
 })
 
 export function useReactFabric() {

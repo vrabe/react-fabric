@@ -1,13 +1,13 @@
-import { createWithEqualityFn } from "zustand/traditional"
-import type { Node } from "../types/nodes"
-import type { ReactFabricState } from "../types/store"
-import getInitialState from "./initialState"
+import { createWithEqualityFn } from 'zustand/traditional'
+import type { Node } from '../types/nodes'
+import type { ReactFabricState } from '../types/store'
+import getInitialState from './initialState'
 
 const createStore = ({
   nodes,
   defaultNodes,
   width,
-  height
+  height,
 }: {
   nodes?: Node[]
   defaultNodes?: Node[]
@@ -24,33 +24,40 @@ const createStore = ({
         // 合并现有尺寸和新尺寸
         const newDimensions = {
           width: width ?? currentState.width,
-          height: height ?? currentState.height
+          height: height ?? currentState.height,
         }
 
         get().canvas?.setDimensions(newDimensions)
         set(newDimensions)
       },
-      setLoading: (loading) => {
+      setLoading: loading => {
         set({ loading })
       },
-      setDraggable: (draggable) => {
+      setDraggable: draggable => {
         set({ draggable })
+        const canvas = get().canvas
+        // TODO 无效
+        if (canvas) {
+          canvas.setCursor(draggable ? 'grab' : 'default')
+          canvas.hoverCursor = draggable ? 'grab' : 'default'
+          canvas.requestRenderAll()
+        }
       },
-      setZoomable: (zoomable) => {
+      setZoomable: zoomable => {
         set({ zoomable })
       },
 
-      setIsDragging: (isDragging) => {
+      setIsDragging: isDragging => {
         set({ isDragging })
       },
-      setSelection: (selection) => {
+      setSelection: selection => {
         const canvas = get().canvas
         if (!canvas) return
         set({ selection })
-        canvas.set("selection", selection)
+        canvas.set('selection', selection)
         canvas.requestRenderAll()
       },
-      setDefaultSelection: (defaultSelection) => {
+      setDefaultSelection: defaultSelection => {
         if (defaultSelection === undefined) return
         const { setSelection } = get()
         set({ hasDefaultSelection: true })
@@ -72,9 +79,9 @@ const createStore = ({
         set({ maxManualZoom: zoom })
       },
 
-      reset: () => set({ ...getInitialState() })
+      reset: () => set({ ...getInitialState() }),
     }),
-    Object.is
+    Object.is,
   )
 
 export { createStore }

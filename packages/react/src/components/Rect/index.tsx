@@ -1,15 +1,9 @@
-import type { Group as BaseGroup } from "fabric"
-import { Rect as BaseRect } from "fabric"
-import { forwardRef, memo, useImperativeHandle } from "react"
-import { useCreateObject } from "../../hooks/useCreateObject"
-import { useDidUpdate } from "../../hooks/useDidUpdate"
-import { useSplitProps } from "../../hooks/useSplitProps"
-import { useStoreApi } from "../../hooks/useStore"
-import type { AllObjectEvents } from "../../types/object"
-
-interface Handle {
-  instance: any
-}
+import type { Group as BaseGroup } from 'fabric6'
+import { Rect as BaseRect } from 'fabric6'
+import { forwardRef, memo, useImperativeHandle } from 'react'
+import { useCreateObject } from '../../hooks/useCreateObject'
+import { useSplitProps } from '../../hooks/useSplitProps'
+import type { AllObjectEvents } from '../../types/object'
 
 export type RectProps<T = unknown> = Partial<BaseRect & AllObjectEvents> & {
   group?: BaseGroup
@@ -19,48 +13,20 @@ export type RectProps<T = unknown> = Partial<BaseRect & AllObjectEvents> & {
   defaultHeight?: number
 } & T
 
-const Rect = forwardRef<Handle, RectProps>(
-  (
-    { group, defaultLeft, defaultTop, defaultWidth, defaultHeight, ...props },
-    ref
-  ) => {
-    const store = useStoreApi()
+const Rect = forwardRef<BaseRect | undefined, RectProps>(({ group, ...props }, ref) => {
+  const [listeners, attributes, defaultValues] = useSplitProps(props)
 
-    const [listeners, attributes] = useSplitProps(props)
+  const instance = useCreateObject({
+    Constructor: BaseRect,
+    defaultValues,
+    attributes,
+    group,
+    listeners,
+  })
 
-    const instance = useCreateObject({
-      Constructor: BaseRect,
-      attributes: {
-        left: defaultLeft,
-        top: defaultTop,
-        width: defaultWidth,
-        height: defaultHeight,
-        ...attributes
-      },
-      group,
-      listeners
-    })
+  useImperativeHandle(ref, () => instance, [instance])
 
-    useDidUpdate(() => {
-      const { canvas } = store.getState()
-
-      if (instance) {
-        instance.set(attributes)
-        instance.setCoords()
-        canvas?.requestRenderAll()
-      }
-    }, [attributes])
-
-    useImperativeHandle(
-      ref,
-      () => ({
-        instance
-      }),
-      [instance]
-    )
-
-    return null
-  }
-)
+  return null
+})
 
 export default memo(Rect)

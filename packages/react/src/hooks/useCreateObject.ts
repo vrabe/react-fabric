@@ -1,8 +1,10 @@
-import type { FabricObject, Group } from "fabric"
-import { useEffect, useRef, useState } from "react"
-import type { AllObjectEvents } from "../types/object"
-import { bindEvents } from "../utils/events"
-import { useStoreApi } from "./useStore"
+import type { FabricObject, Group } from 'fabric6'
+import { useEffect, useMemo, useRef } from 'react'
+import type { AllObjectEvents } from '../types/object'
+import { bindEvents } from '../utils/events'
+import { transformDefaultProps } from '../utils/props'
+import { useDidUpdate } from './useDidUpdate'
+import { useStoreApi } from './useStore'
 
 type SingleParamConstructor<T> = new (attributes: any) => T
 type DualParamConstructor<T, P> = new (param: P, attributes: any) => T
@@ -10,6 +12,7 @@ type DualParamConstructor<T, P> = new (param: P, attributes: any) => T
 type CreateObjectProps<T extends FabricObject, P = any> = {
   Constructor: SingleParamConstructor<T> | DualParamConstructor<T, P>
   attributes: any
+  defaultValues?: any
   param?: P
   group?: Group
   listeners?: Partial<AllObjectEvents>
@@ -18,49 +21,103 @@ type CreateObjectProps<T extends FabricObject, P = any> = {
 export function useCreateObject<T extends FabricObject, P = any>({
   Constructor,
   attributes,
+  defaultValues = {},
   param,
   group,
-  listeners = {}
+  listeners = {},
 }: CreateObjectProps<T, P>) {
-  const [instance, setInstance] = useState<T | undefined>()
   const store = useStoreApi()
-  const attributesRef = useRef(attributes)
 
-  // 更新 attributesRef
-  useEffect(() => {
-    attributesRef.current = attributes
-  }, [attributes])
+  // 使用 ref 记录控制模式
+  const modeRef = useRef<'controlled' | 'uncontrolled' | null>(null)
 
-  // 只负责创建和销毁实例
-  useEffect(() => {
-    const { canvas } = store.getState()
-    const parent = group ?? canvas
+  // 在创建实例时确定控制模式
+  const instance = useMemo(() => {
+    const hasUncontrolledProps = Object.keys(defaultValues).length > 0
+    modeRef.current = hasUncontrolledProps ? 'uncontrolled' : 'controlled'
 
-    // 创建新实例
+    const mergedAttributes = {
+      ...attributes,
+      ...transformDefaultProps(defaultValues),
+    }
+
     const newInstance =
       param !== undefined
-        ? new (Constructor as DualParamConstructor<T, P>)(
-            param,
-            attributesRef.current
-          )
-        : new (Constructor as SingleParamConstructor<T>)(attributesRef.current)
+        ? new (Constructor as DualParamConstructor<T, P>)(param, mergedAttributes)
+        : new (Constructor as SingleParamConstructor<T>)(mergedAttributes)
+    return newInstance
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [Constructor, param])
 
-    parent?.add(newInstance)
-    setInstance(newInstance)
+  // 计算父容器（group 或 canvas）
+  const parent = useMemo(() => {
+    const { canvas } = store.getState()
+    return group ?? canvas
+  }, [group, store])
+
+  // 处理实例的添加和移除
+  useEffect(() => {
+    if (!instance || !parent) return
+
+    // 添加到父容器
+    parent.add(instance)
+
     return () => {
-      if (newInstance) {
-        parent?.remove(newInstance)
-        setInstance(undefined)
+      try {
+        if (instance) {
+          // 移除所有事件监听
+          instance.off()
+
+          // 从父容器中移除
+          if (parent.contains(instance)) {
+            parent.remove(instance)
+          }
+
+          // 如果存在 dispose 方法则调用
+          if (typeof instance.dispose === 'function') {
+            instance.dispose()
+          }
+        }
+      } catch (error) {
+        console.warn('清理对象时发生错误:', error)
       }
     }
-  }, [Constructor, param, group, store])
+  }, [instance, parent])
 
-  // 专门处理事件监听的绑定和解绑
+  // 处理事件绑定
   useEffect(() => {
     if (!instance) return
-    // 绑定新的事件监听器
     return bindEvents(instance, listeners)
   }, [instance, listeners])
+
+  // 处理属性更新
+  useDidUpdate(() => {
+    if (!instance) return
+    const { canvas } = store.getState()
+
+    // 在非受控模式下，跳过位置相关属性的更新
+    if (modeRef.current === 'uncontrolled') {
+      const styleUpdates = Object.entries(attributes).reduce(
+        (acc, [key, value]) => {
+          if (!key.match(/^(left|top|width|height|scaleX|scaleY|angle|points|path|originX|originY)$/)) {
+            acc[key] = value
+          }
+          return acc
+        },
+        {} as Record<string, any>,
+      )
+
+      if (Object.keys(styleUpdates).length > 0) {
+        instance.set(styleUpdates)
+        canvas?.requestRenderAll()
+      }
+    } else {
+      // 受控模式：正常更新所有属性
+      instance.set(attributes)
+      instance.setCoords()
+      canvas?.requestRenderAll()
+    }
+  }, [instance, attributes, store])
 
   return instance
 }
