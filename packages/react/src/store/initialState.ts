@@ -15,7 +15,6 @@ const getInitialState = ({
   const storeNodes = defaultNodes ?? nodes ?? []
 
   return {
-    rfId: '1',
     width: 200,
     height: 200,
     canvas: null,

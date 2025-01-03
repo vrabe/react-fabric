@@ -20,7 +20,7 @@ type ReactFabricFieldsToTrack = (typeof reactFabricFieldsToTrack)[number]
 
 type StoreUpdaterProps = Pick<ReactFabricProps, ReactFabricFieldsToTrack>
 
-const fieldsToTrack = [...reactFabricFieldsToTrack, 'rfId'] as const
+const fieldsToTrack = [...reactFabricFieldsToTrack, ] as const
 
 const selector = (s: ReactFabricState) => ({
   setMinManualZoom: s.setMinManualZoom,

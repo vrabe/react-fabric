@@ -5,7 +5,6 @@ import type { InternalNodeBase, Node } from './nodes'
 export type OnError = (id: string, message: string) => void
 
 export type ReactFabricStore<NodeType extends Node = Node> = {
-  rfId: string
   width: number
   height: number
   nodes: NodeType[]

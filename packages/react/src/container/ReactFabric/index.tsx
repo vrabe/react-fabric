@@ -1,10 +1,29 @@
 import type { CSSProperties } from 'react'
 import { forwardRef, memo } from 'react'
 
+// 自定义基础事件类型
+type FabricEvent = {
+  e: Event
+  pointer: { x: number; y: number }
+  target?: unknown
+  subTargets?: unknown[]
+  button?: number
+  isClick?: boolean
+  transform?: unknown
+}
+
+// 重新定义 CanvasProps，不再从 components/Canvas 导入
+type BaseCanvasProps = {
+  width?: number
+  height?: number
+  selection?: boolean
+  children?: React.ReactNode
+  // 添加其他必要的 Canvas 属性
+}
+
 import { Wrapper } from './Wrapper'
 
 import { Canvas } from '../../components'
-import type { CanvasProps } from '../../components/Canvas'
 import Loading from '../../components/Loading'
 import { StoreUpdater } from '../../components/StoreUpdater'
 
@@ -16,7 +35,7 @@ const wrapperStyle: CSSProperties = {
   zIndex: 0,
 }
 
-export type ReactFabricProps = CanvasProps & {
+export type ReactFabricProps = BaseCanvasProps & {
   style?: CSSProperties
   className?: string
   zoomable?: boolean
@@ -30,6 +49,10 @@ export type ReactFabricProps = CanvasProps & {
    * @default true
    *  */
   defaultSelection?: boolean
+  onMouseDown?: (e: FabricEvent) => void
+  onMouseMove?: (e: FabricEvent) => void
+  onMouseUp?: (e: FabricEvent) => void
+  onMouseWheel?: (e: FabricEvent) => void
 }
 
 const ForwardReactFabric = forwardRef<HTMLDivElement, ReactFabricProps>(
@@ -82,7 +105,9 @@ const ForwardReactFabric = forwardRef<HTMLDivElement, ReactFabricProps>(
   },
 )
 
-const ReactFabric = memo(ForwardReactFabric)
+type ReactFabricComponent = React.MemoExoticComponent<typeof ForwardReactFabric>
+
+const ReactFabric: ReactFabricComponent = memo(ForwardReactFabric)
 ReactFabric.displayName = 'ReactFabric'
 
 export default ReactFabric
