@@ -1,5 +1,5 @@
-import type { Canvas } from 'fabric6'
-import { Path, util } from 'fabric6'
+import type { Canvas } from 'fabric'
+import { Path, util } from 'fabric'
 
 /**
  * 将points转换为rect

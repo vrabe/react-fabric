@@ -1,5 +1,5 @@
-import type { CanvasEvents, CanvasOptions, TPointerEventInfo } from 'fabric6'
-import { Canvas as BaseCanvas, Point } from 'fabric6'
+import type { CanvasEvents, CanvasOptions, TPointerEventInfo } from 'fabric'
+import { Canvas as BaseCanvas, Point } from 'fabric'
 import type { CSSProperties, PropsWithChildren } from 'react'
 import { useEffect, useLayoutEffect, useRef } from 'react'
 import useDraggable from '../../hooks/useDraggable'

@@ -1,4 +1,4 @@
-import type { CanvasEvents } from 'fabric6'
+import type { CanvasEvents } from 'fabric'
 import type {
   FabricObject,
   FabricObjectProps,
@@ -6,7 +6,7 @@ import type {
   SerializedObjectProps,
   TEvent,
   TPointerEvent,
-} from 'fabric6'
+} from 'fabric'
 import type { MyCapitalize } from './utils'
 
 export type FabricParams = {

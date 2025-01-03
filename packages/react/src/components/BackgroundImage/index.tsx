@@ -5,8 +5,8 @@ import type {
   SerializedImageProps,
   TDegree,
   TPointerEvent,
-} from 'fabric6'
-import { FabricImage, util } from 'fabric6'
+} from 'fabric'
+import { FabricImage, util } from 'fabric'
 import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef } from 'react'
 import { useDidUpdate } from '../../hooks/useDidUpdate'
 import { useStore, useStoreApi } from '../../hooks/useStore'

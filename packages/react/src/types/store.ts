@@ -1,4 +1,4 @@
-import type { Canvas } from 'fabric6'
+import type { Canvas } from 'fabric'
 import type { OnNodeDrag, OnNodesChange, OnNodesDelete } from './component-props'
 import type { InternalNodeBase, Node } from './nodes'
 

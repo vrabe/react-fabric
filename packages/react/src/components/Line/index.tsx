@@ -1,5 +1,5 @@
-import type { Group as BaseGroup } from 'fabric6'
-import { Line as BaseLine } from 'fabric6'
+import type { Group as BaseGroup } from 'fabric'
+import { Line as BaseLine } from 'fabric'
 import { forwardRef, memo, useImperativeHandle } from 'react'
 import { useCreateObject } from '../../hooks/useCreateObject'
 import { useDidUpdate } from '../../hooks/useDidUpdate'

@@ -1,4 +1,4 @@
-import type { FabricObject, Group } from 'fabric6'
+import type { FabricObject, Group } from 'fabric'
 import { useEffect, useMemo, useRef } from 'react'
 import type { AllObjectEvents } from '../types/object'
 import { bindEvents } from '../utils/events'

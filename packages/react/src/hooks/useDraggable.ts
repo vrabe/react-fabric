@@ -1,4 +1,4 @@
-import type { Canvas, FabricObject, TPointerEvent, TPointerEventInfo } from 'fabric6'
+import type { Canvas, FabricObject, TPointerEvent, TPointerEventInfo } from 'fabric'
 import { shallow } from 'zustand/shallow'
 import { useEffect, useRef } from 'react'
 import type { ReactFabricState } from '../types/store'

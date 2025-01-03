@@ -1,5 +1,5 @@
-import type { Group as BaseGroup } from 'fabric6'
-import { Rect as BaseRect } from 'fabric6'
+import type { Group as BaseGroup } from 'fabric'
+import { Rect as BaseRect } from 'fabric'
 import { forwardRef, memo, useImperativeHandle } from 'react'
 import { useCreateObject } from '../../hooks/useCreateObject'
 import { useSplitProps } from '../../hooks/useSplitProps'

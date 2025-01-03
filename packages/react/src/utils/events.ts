@@ -1,4 +1,4 @@
-import type { CanvasEvents, GroupEvents, ObjectEvents } from 'fabric6'
+import type { CanvasEvents, GroupEvents, ObjectEvents } from 'fabric'
 import type { AllCanvasEvents } from '../types/canvas'
 import type { AllObjectEvents } from '../types/object'
 

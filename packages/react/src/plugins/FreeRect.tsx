@@ -1,5 +1,5 @@
-import type { Canvas, RectProps, TPointerEvent, TPointerEventInfo } from 'fabric6'
-import { Rect } from 'fabric6'
+import type { Canvas, RectProps, TPointerEvent, TPointerEventInfo } from 'fabric'
+import { Rect } from 'fabric'
 import { useEffect, useMemo, useRef } from 'react'
 import { useStoreApi } from '../hooks/useStore'
 

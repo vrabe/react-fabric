@@ -1,5 +1,5 @@
-import type { GroupEvents, GroupProps } from 'fabric6'
-import { Group as BaseGroup } from 'fabric6'
+import type { GroupEvents, GroupProps } from 'fabric'
+import { Group as BaseGroup } from 'fabric'
 import { Children, cloneElement, isValidElement, memo, useEffect, useLayoutEffect, useState } from 'react'
 import { useDidUpdate } from '../../hooks/useDidUpdate'
 import { useSplitProps } from '../../hooks/useSplitProps'

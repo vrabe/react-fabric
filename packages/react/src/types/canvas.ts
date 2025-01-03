@@ -1,4 +1,4 @@
-import type { CanvasEvents } from 'fabric6'
+import type { CanvasEvents } from 'fabric'
 import type { MyCapitalize } from './utils'
 
 export type RawEventNames<Events extends Record<string, any>> = {
