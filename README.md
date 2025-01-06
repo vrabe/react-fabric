@@ -86,6 +86,7 @@ const Main = () => {
 ```
 
 - 受控模式
+  支持所有属性和事件, 因此天然支持了受控模式
 
 ```jsx
 
@@ -97,5 +98,130 @@ const [rect, setRect] = useState({
   <Rect
     left={getRectProps(rect?.points, 5)?.left}
     top={getRectProps(rect?.points, 5)?.top}
+    width={getRectProps(rect?.points, 5)?.width}
+    height={getRectProps(rect?.points, 5)?.height}
+    onModified={({ target }) => {
+      const rect = target as FabricRect
+      setRect({
+        points: rect.getCoords().reduce<number[]>((acc, { x, y }) => [...acc, Math.round(x), Math.round(y)], [])
+          .join(','),
+      })
+    }}
+  />
+   <Control
+                                className="z-10"
+                                closeOnOutsideClick={false}
+                                open={open}
+                                onOpenChange={(nextOpen)=>setOpen(nextOpen)}
+                                Content={
+                                <button>删除</button>
+                                }
+                                placement="bottom"
+                              >
+</ReactFabric>
+```
 
+- 非受控模式
+
+图形在 Group 中渲染时,由于 Group 矩阵会导致内部图形身上的坐标系发生变化, 因此受控模式无法很好的支持到各种矩阵计算
+场景: 结合 Group 使用, 注意事项 在Group身上使用onModified等方式修改坐标, 而不是修改内部基础图形
+
+```jsx
+<ReactFabric>
+  <Group key={groupKey} onModified={({ target }) => {
+    const group = target as FabricGroup
+    const objects = group.getObjects()
+   const nextShapes =  objects.map(object=> object
+                                  .getCoords()
+                                  .reduce<number[]>((acc, { x, y }) => [...acc, Math.round(x), Math.round(y)], [])
+                                  .join(','))
+
+
+
+  }}>
+    <Rect
+      defaultLeft={getRectProps(rect?.points, 5)?.left}
+      defaultTop={getRectProps(rect?.points, 5)?.top}
+      defaultWidth={getRectProps(rect?.points, 5)?.width}
+      defaultHeight={getRectProps(rect?.points, 5)?.height}
+    />
+  </Group>
+</ReactFabric>
+
+// 受控模式在 通过 api 更新画布
+  const { canvas } = useReactFabric()
+ // 向上-向下+偏移
+  const onTranslateY = (px: number) => {
+    if (!canvas) {
+      console.warn('canvas is null')
+      return
+    }
+
+    const group = canvas.item(0) as FabricGroup
+    group.top = group.top + px
+    group.setCoords()
+
+    canvas.requestRenderAll()
+    // 不会触发onModified,因此需要手动set
+    const objects = group.getObjects()
+    // 不会触发onModified,因此需要手动set
+
+    const nextShapes = formList[sideType - 1]?.shapes?.map(shape => {
+      const fabricObject = objects.find((obj: any) => obj.id === shape.id)
+      if (!fabricObject) return shape
+
+      // Convert fabric object coordinates to points string
+      const points = fabricObject
+        .getCoords()
+        .reduce<number[]>((acc, { x, y }) => [...acc, Math.round(x), Math.round(y)], [])
+        .join(',')
+
+      return {
+        ...shape,
+        points,
+      }
+    })
+
+    setPageStore({
+      formList: produce(formList, draft => {
+        set(draft, [sideType - 1, 'shapes'], nextShapes)
+      }),
+    })
+  }
+```
+
+### 工具函数
+
+- getRectProps 根据points 生成矩形属性
+
+```jsx
+const result = {
+  left: Number(x1),
+  top: Number(y1),
+  width: Math.abs(x2 - x1) - strokeWidth,
+  height: Math.abs(y3 - y1) - strokeWidth,
+  strokeWidth,
+}
+```
+
+### 插件
+
+绘制矩形
+
+支持rect的所有props
+
+```jsx
+<PluginFreeRect
+  strokeWidth={5}
+  onComplete={async (nextRect, { canvas }) => {
+    let pointsArray = nextRect.pointsArray
+    console.log(pointsArray)
+  }}
+/>
+```
+
+网格线
+
+```jsx
+<PluginGrid></PluginGrid>
 ```
