@@ -1,5 +1,11 @@
 # react-fabric2
 
+## 0.0.3
+
+### Patch Changes
+
+- feat: 完善demo
+
 ## 0.0.2
 
 ### Patch Changes
