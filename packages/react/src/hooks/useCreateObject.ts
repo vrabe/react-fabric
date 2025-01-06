@@ -4,7 +4,7 @@ import type { AllObjectEvents } from '../types/object'
 import { bindEvents } from '../utils/events'
 import { transformDefaultProps } from '../utils/props'
 import { useDidUpdate } from './useDidUpdate'
-import { useStoreApi } from './useStore'
+import { useStore, useStoreApi } from './useStore'
 
 type SingleParamConstructor<T> = new (attributes: any) => T
 type DualParamConstructor<T, P> = new (param: P, attributes: any) => T
@@ -27,6 +27,8 @@ export function useCreateObject<T extends FabricObject, P = any>({
   listeners = {},
 }: CreateObjectProps<T, P>) {
   const store = useStoreApi()
+  const canvas = useStore( state => state.canvas)
+
 
   // 使用 ref 记录控制模式
   const modeRef = useRef<'controlled' | 'uncontrolled' | null>(null)
@@ -50,15 +52,11 @@ export function useCreateObject<T extends FabricObject, P = any>({
   }, [Constructor, param])
 
   // 计算父容器（group 或 canvas）
-  const parent = useMemo(() => {
-    const { canvas } = store.getState()
-    return group ?? canvas
-  }, [group, store])
+  const parent = useMemo(() => group ?? canvas, [group, canvas])
 
   // 处理实例的添加和移除
   useEffect(() => {
     if (!instance || !parent) return
-
     // 添加到父容器
     parent.add(instance)
 

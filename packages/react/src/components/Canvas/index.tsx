@@ -1,3 +1,4 @@
+
 import type { CanvasEvents, CanvasOptions, TPointerEventInfo } from 'fabric'
 import { Canvas as BaseCanvas, Point } from 'fabric'
 import type { CSSProperties, PropsWithChildren } from 'react'
@@ -70,33 +71,46 @@ const Canvas = ({ children, onMouseWheel, ...props }: CanvasProps) => {
   useEffect(() => {
     const onMouseWheelHandler = (opt: TPointerEventInfo<WheelEvent>) => {
       const { zoomable, maxManualZoom, minManualZoom, fitZoom = 1, zoom } = store.getState()
-      if (!zoomable) return
-      // 阻止默认行为，包括惯性滚动
+
+      // 阻止默认行为
       opt.e.preventDefault()
       opt.e.stopPropagation()
+
       // 如果是惯性滚动，直接返回
       if ((opt.e as any).wheelDeltaY === 0) return
 
-      var delta = opt.e.deltaY
+      // 检查是否为缩放手势(Mac 上的双指捏合/张开)
+      if (opt.e.ctrlKey || (opt.e as any).wheelDeltaY === undefined) {
+        // 缩放逻辑
+        if (!zoomable) return
 
-      const zoomFactor = delta > 0 ? 0.95 : 1.05
-      var currentManualZoom = zoom / fitZoom
-      var newManualZoom = currentManualZoom * zoomFactor
+        const delta = opt.e.deltaY
+        const zoomFactor = delta > 0 ? 0.95 : 1.05
+        let currentManualZoom = zoom / fitZoom
+        let newManualZoom = currentManualZoom * zoomFactor
 
-      if (newManualZoom > maxManualZoom) newManualZoom = maxManualZoom
-      if (newManualZoom < minManualZoom) newManualZoom = minManualZoom
+        if (newManualZoom > maxManualZoom) newManualZoom = maxManualZoom
+        if (newManualZoom < minManualZoom) newManualZoom = minManualZoom
 
-      const combinedZoom = newManualZoom * fitZoom
+        const combinedZoom = newManualZoom * fitZoom
 
-      canvasRef.current?.zoomToPoint(new Point(opt.e.offsetX, opt.e.offsetY), combinedZoom)
+        canvasRef.current?.zoomToPoint(new Point(opt.e.offsetX, opt.e.offsetY), combinedZoom)
 
-      store.setState({
-        manualZoom: newManualZoom,
-        zoom: combinedZoom,
-      })
+        store.setState({
+          manualZoom: newManualZoom,
+          zoom: combinedZoom,
+        })
+      } else {
+        // 平移逻辑
+        // 如果觉得太灵敏了，可以调小这个值，比如改为 1.2 或更小
+        const sensitivityFactor = 1.5
+        const delta = new Point(-opt.e.deltaX * sensitivityFactor, -opt.e.deltaY * sensitivityFactor)
+        canvasRef.current?.relativePan(delta)
+      }
 
       onMouseWheel?.(opt)
     }
+
 
     canvasRef.current?.on('mouse:wheel', onMouseWheelHandler)
 

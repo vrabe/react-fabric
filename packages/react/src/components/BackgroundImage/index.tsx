@@ -14,9 +14,10 @@ import type { ReactFabricState } from '../../types/store'
 
 export type Handle = {}
 
-// 定义一个互斥的 Scale mode 类型
-type ScaleMode = { scaleToFit: true; scaleToCover?: false } | { scaleToFit?: false; scaleToCover: true }
-
+type ScaleMode = {
+  scaleToFit?: boolean
+  scaleToCover?: boolean
+}
 export type BackgroundImageProps = Partial<ImageProps> & {
   src: string
   onLoad?: (imageSource: FabricImage<Partial<ImageProps>, SerializedImageProps, ObjectEvents>) => void
@@ -116,7 +117,6 @@ const BackgroundImage = forwardRef<Handle, BackgroundImageProps>(
 
     // 监听 width, height 的变化
     useEffect(() => {
-      console.log('ReactFabric:BackgroundImage,width', width, height)
 
       updateViewport({
         scaleToFit,
@@ -165,6 +165,7 @@ const BackgroundImage = forwardRef<Handle, BackgroundImageProps>(
             console.warn('ReactFabric:BackgroundImage: !canvas', canvas)
           }
         })
+        .catch(console.error)
         .finally(() => {
           if (domNode) domNode.dataset.src = src
           setLoading(false)

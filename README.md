@@ -9,6 +9,7 @@
 
 ### 用法:
 
+[![Edit vaynevayne/react-fabric/draft/competent-ioana](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/p/github/vaynevayne/react-fabric/draft/competent-ioana?embed=1&file=%2Fexamples%2Fastro%2Fsrc%2Fcomponents%2FCounter.tsx)
 - 受控模式
 
 ```jsx
