@@ -9,10 +9,16 @@
 
 ### 用法:
 
+```jsx
+pnpm add react-fabric2
+```
+
 [![Edit vaynevayne/react-fabric/draft/competent-ioana](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/p/github/vaynevayne/react-fabric/draft/competent-ioana?embed=1&file=%2Fexamples%2Fastro%2Fsrc%2Fcomponents%2FCounter.tsx)
 - 受控模式
 
 ```jsx
+import { ReactFabric, Rect, Path, BackgroundImage, Objects } from 'react-fabric2'
+
 <ReactFabric defaultCentered defaultSelection={false}>
   <BackgroundImage scaleToFit src={imgBaseURL + currentSrc} />
   <Rect width={100} height={100} left={100} top={100} />
