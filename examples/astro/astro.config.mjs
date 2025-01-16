@@ -6,4 +6,5 @@ import react from '@astrojs/react';
 export default defineConfig({
 	// Enable React to support React JSX components.
 	integrations: [react()],
+	base: "/react-fabric",
 });
